@@ -213,11 +213,18 @@ export default class DetailSearchLinkerPlugin extends Plugin {
 		this.ribbonEl = this.addRibbonIcon(
 			'search',
 			this.commandLabel('ribbonTooltip'),
-			() => {
-				void this.onRibbonClick();
-			},
-		);
-		this.statusEl.addClass('mod-clickable');
+      () => {
+        void this.onRibbonClick();
+      },
+    );
+    this.clipboardRibbonEl = this.addRibbonIcon(
+      'clipboard',
+      this.commandLabel('cmdSearchClipboard'),
+      () => {
+        void this.searchClipboardCommand();
+      },
+    );
+    this.statusEl.addClass('mod-clickable');
 		this.statusEl.addEventListener('click', () => {
 			if (this.hasActiveSession()) {
 				this.clearSession(true);
@@ -769,13 +776,6 @@ export default class DetailSearchLinkerPlugin extends Plugin {
 			range.from,
 			range.to,
 			this.settings.caseSensitive,
-		);
-		this.clipboardRibbonEl = this.addRibbonIcon(
-			'clipboard',
-			this.commandLabel('cmdSearchClipboard'),
-			() => {
-				void this.searchClipboardCommand();
-			},
 		);
 		if (!request) {
 			new Notice(t(lang, 'noticeModalTermNotInNote'));
