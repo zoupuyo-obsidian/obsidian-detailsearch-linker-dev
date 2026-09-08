@@ -212,7 +212,7 @@ export default class DetailSearchLinkerPlugin extends Plugin {
 
 		this.ribbonEl = this.addRibbonIcon(
 			'search',
-			t(this.settings.uiLanguage, 'ribbonTooltip'),
+			this.commandLabel('ribbonTooltip'),
 			() => {
 				void this.onRibbonClick();
 			},
@@ -375,7 +375,7 @@ export default class DetailSearchLinkerPlugin extends Plugin {
 		for (const def of COMMAND_DEFINITIONS) {
 			const command = this.addCommand({
 				id: def.id,
-				name: t(this.settings.uiLanguage, def.i18nKey),
+				name: this.commandLabel(def.i18nKey),
 				icon: def.icon,
 				callback: () => {
 					this.runCommand(def.id);
@@ -383,6 +383,13 @@ export default class DetailSearchLinkerPlugin extends Plugin {
 			});
 			this.localizedCommands.push({ command, key: def.i18nKey });
 		}
+	}
+
+	private commandLabel(key: Parameters<typeof t>[1]): string {
+		const label = t(this.settings.uiLanguage, key);
+		return this.manifest.id === 'detailsearch-linker-dev'
+			? label.replace(/^DSL:/, 'DSL-Dev:')
+			: label;
 	}
 
 	private runCommand(id: string): void {
@@ -425,7 +432,7 @@ export default class DetailSearchLinkerPlugin extends Plugin {
 	private updateCommandNames(): void {
 		const lang = this.settings.uiLanguage;
 		for (const { command, key } of this.localizedCommands) {
-			command.name = t(lang, key);
+			command.name = this.commandLabel(key);
 		}
 	}
 
@@ -765,7 +772,7 @@ export default class DetailSearchLinkerPlugin extends Plugin {
 		);
 		this.clipboardRibbonEl = this.addRibbonIcon(
 			'clipboard',
-			t(this.settings.uiLanguage, 'cmdSearchClipboard'),
+			this.commandLabel('cmdSearchClipboard'),
 			() => {
 				void this.searchClipboardCommand();
 			},
@@ -1670,6 +1677,6 @@ export default class DetailSearchLinkerPlugin extends Plugin {
 				? t(lang, 'ribbonTooltipClear')
 				: t(lang, 'ribbonTooltip');
 		this.ribbonEl.setAttr('aria-label', label);
-		this.clipboardRibbonEl?.setAttr('aria-label', t(lang, 'cmdSearchClipboard'));
+		this.clipboardRibbonEl?.setAttr('aria-label', this.commandLabel('cmdSearchClipboard'));
 	}
 }
