@@ -125,6 +125,7 @@ export default class DetailSearchLinkerPlugin extends Plugin {
 	private readonly workset = new WorksetTracker(50);
 	private statusEl: HTMLElement | null = null;
 	private ribbonEl: HTMLElement | null = null;
+	private clipboardRibbonEl: HTMLElement | null = null;
 	private readonly hover = new DetailHoverController();
 	private hoverAttachedTo: HTMLElement | null = null;
 	private previewNavigation: PreviewNavigationState | null = null;
@@ -761,6 +762,13 @@ export default class DetailSearchLinkerPlugin extends Plugin {
 			range.from,
 			range.to,
 			this.settings.caseSensitive,
+		);
+		this.clipboardRibbonEl = this.addRibbonIcon(
+			'clipboard',
+			t(this.settings.uiLanguage, 'cmdSearchClipboard'),
+			() => {
+				void this.searchClipboardCommand();
+			},
 		);
 		if (!request) {
 			new Notice(t(lang, 'noticeModalTermNotInNote'));
@@ -1662,5 +1670,6 @@ export default class DetailSearchLinkerPlugin extends Plugin {
 				? t(lang, 'ribbonTooltipClear')
 				: t(lang, 'ribbonTooltip');
 		this.ribbonEl.setAttr('aria-label', label);
+		this.clipboardRibbonEl?.setAttr('aria-label', t(lang, 'cmdSearchClipboard'));
 	}
 }
