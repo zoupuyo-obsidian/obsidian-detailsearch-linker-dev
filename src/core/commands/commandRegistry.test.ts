@@ -42,9 +42,9 @@ test('legacy diagnostic commands remain registered', () => {
 
 test('build artifact markers match i18n strings', () => {
 	assert.equal(BUILD_ARTIFACT_MARKERS.commandId, 'search-current-note');
-	assert.equal(BUILD_ARTIFACT_MARKERS.jaLabel, '現在ノートの本文リンク候補を探す');
+	assert.equal(BUILD_ARTIFACT_MARKERS.jaLabel, 'DSL: 全体から検索');
 	assert.equal(
 		BUILD_ARTIFACT_MARKERS.enLabel,
-		'Find body link candidates in current note',
+		'DSL: Search all',
 	);
 });
